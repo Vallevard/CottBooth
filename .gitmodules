@@ -1,0 +1,6 @@
+[submodule "QtAwesome"]
+	path = QtAwesome
+	url = https://github.com/gamecreature/QtAwesome.git
+[submodule "CottBooth/QtAwesome"]
+	path = CottBooth/QtAwesome
+	url = https://github.com/gamecreature/QtAwesome.git

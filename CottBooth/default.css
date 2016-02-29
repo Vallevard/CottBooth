@@ -1,0 +1,226 @@
+/* default style for app */
+
+#mainWidget {
+    background: #000;
+}
+
+#stackContainer {
+    background: #fff;
+}
+
+
+QToolButton {
+    border: 1px solid black;
+    border-radius: 150px;
+}
+
+QToolButton:hover {
+    background: gray;
+    color: #fff;
+}
+
+
+/* BottomBar */
+
+#bottomBar {
+    background: black;
+}
+
+#bottomBar QToolButton {
+    border-radius: 24px;
+    color: white;
+}
+
+#bottomBar QToolButton:hover {
+    color: grey;
+}
+
+/* InputDialog */
+QInputDialog {
+    background-color: #fff;
+}
+
+QInputDialog QPushButton {
+    background-color: transparent;
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    border: 1px solid black;
+    left: -220px;
+}
+
+QInputDialog QPushButton:hover {
+    background-color: gray;
+    color: white;
+}
+
+
+QInputDialog QLineEdit {
+    height:32px;
+    border-radius: 5px;
+}
+
+
+/* MessageBox */
+
+QMessageBox {
+    background-color: #fff;
+}
+
+QMessageBox QPushButton {
+    background-color: transparent;
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    border: 1px solid black;
+    left: -220px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: gray;
+    color: white;
+}
+
+/* Settings ListView */
+#listTopics {
+    min-width: 200px;
+}
+
+#listTopics::item {
+    min-height: 100px;
+}
+
+#listTopics::item:hover, #listTopics::item:selected {
+    background: gray;
+    color: #fff;
+}
+
+#SettingsWindow QToolButton
+{
+    width: 48px;
+    height: 48px;
+    border: 1px solid black;
+    border-radius: 24px;
+    padding: 2px;
+}
+
+QLabel{
+    font-size: 18px;
+    height: 48px;
+}
+
+
+#lblPath {
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+QLineEdit {
+    height: 48px;
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+QCheckBox::indicator {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    border: 1px solid black;
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/icons/checked.png);
+}
+
+QCheckBox::indicator:unchecked
+{
+    image: none;
+}
+
+QCheckBox::indicator:hover {
+    background-color: gray;
+}
+
+QComboBox {
+    border: none;
+    border-bottom: 1px solid gray;
+    height: 48px;
+    margin-right: 50px;
+}
+
+QComboBox::drop-down {
+    width: 46px;
+    height: 46px;
+    border: 1px solid black;
+    border-radius: 24px;
+    right: -50px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/down.png);
+    width: 32px;
+    height: 32px;
+}
+
+QComboBox::drop-down:hover {
+    background-color: gray;
+}
+
+QComboBox::item {
+}
+
+QComboBox::item:selected {
+    background: gray;
+}
+
+QComboBox:on {
+    padding-top: 3px;
+    padding-left: 4px;
+    height: 30px;
+}
+
+QSpinBox {
+    border: none;
+    min-width: 100px;    
+    height: 46px;
+    padding: 2px;
+    padding-right: 50px;
+    text-align: center;
+}
+
+QSpinBox::up-button {
+    border: 1px solid  black;
+    subcontrol-position: right;
+    right: 55px;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    color: black;
+}
+
+QSpinBox::up-arrow {
+    image: url(:/icons/plus.png);
+    width:32px;
+    height:32px;
+}
+
+QSpinBox::down-button {
+    border: 1px solid  black;
+    subcontrol-position: right;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    color: black;
+}
+
+QSpinBox::down-arrow {
+    image: url(:/icons/minus.png);
+    width:32px;
+    height:32px;
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background-color: gray;
+}
+
+

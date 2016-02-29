@@ -1,0 +1,20 @@
+/* default style for app */
+
+#imgLogo {
+    background: #fff url("./themes/CottBooth/logo.jpg");
+    border: none;
+}
+
+#btnStartSession {
+    border: 1px solid #32cd33;
+}
+
+#btnStartSession:hover, #btnRespawnSession:hover, #btnSettings:hover, #btnBack:hover {
+    color: #fff;
+    background: #32cd33;
+}
+
+#bottomBar QToolButton:hover {
+    background-color: none;
+    color: #32cd33;
+}

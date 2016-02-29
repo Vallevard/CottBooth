@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>minus.png</file>
+        <file>plus.png</file>
+        <file>checked.png</file>
+        <file>down.png</file>
+    </qresource>
+    <qresource prefix="/styles">
+        <file>default.css</file>
+    </qresource>
+</RCC>
