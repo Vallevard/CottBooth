@@ -19,7 +19,13 @@ StartScreen::StartScreen(QWidget *parent) :
     ui->btnInfo->setText( QString( fa::infocircle ) );
 
 
-    this->connect(this->ui->btnSettings, &QToolButton::clicked, this, &StartScreen::btnSettingsClicked);
+    connect(ui->btnSettings, &QToolButton::clicked, [=](){
+        MainWindow::instance()->askForMasterPassword();
+    });
+
+    connect(ui->btnStartSession, &QToolButton::clicked, [=](){
+        MainWindow::instance()->openSessionWindow();
+    });
 }
 
 
@@ -27,9 +33,4 @@ StartScreen::StartScreen(QWidget *parent) :
 StartScreen::~StartScreen()
 {
     delete ui;
-}
-
-void StartScreen::btnSettingsClicked()
-{
-    MainWindow::instance()->askForMasterPassword();
 }

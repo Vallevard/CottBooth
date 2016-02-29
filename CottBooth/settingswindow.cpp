@@ -2,15 +2,13 @@
 #include "ui_settingswindow.h"
 #include "mainwindow.h"
 #include "settings.h"
+#include "globals.h"
 #include <QDebug>
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStorageInfo>
-#include <QUuid>
-
-#define DIALOG_MASK Qt::Tool|Qt::FramelessWindowHint
 
 SettingsWindow::SettingsWindow(QWidget *parent) :
     QWidget(parent),
@@ -51,6 +49,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->listTopics->setAttribute(Qt::WA_MacShowFocusRect, 0);    
     ui->sbFontSize->findChild<QLineEdit*>()->setReadOnly(true);
     ui->sbFontSize->setAttribute(Qt::WA_MacShowFocusRect, 0);
+    ui->sbCredentialLength->setAttribute(Qt::WA_MacShowFocusRect, 0);
 
     QVector<QString> themes = scanThemeFolder(QApplication::applicationDirPath() + "/themes");
     ui->cbTheme->addItems(themes.toList());
@@ -62,8 +61,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     this->loadSettings();
     this->initEventHandling();
-
-    qDebug() << "Random: " << QUuid::createUuid().toString();
 
     /*
     for (auto volume : QStorageInfo::mountedVolumes()) {
@@ -116,6 +113,7 @@ void SettingsWindow::initEventHandling()
     connect(ui->cbAskSavePath, &QCheckBox::stateChanged, this, &SettingsWindow::handleCheckBoxEvent);
     connect(ui->cbSelectLastPicture, &QCheckBox::stateChanged, this, &SettingsWindow::handleCheckBoxEvent);
     connect(ui->cbLiveView, &QCheckBox::stateChanged, this, &SettingsWindow::handleCheckBoxEvent);
+    connect(ui->sbCredentialLength, SIGNAL(valueChanged(int)), this, SLOT(handleSpinBoxEvent(int)));
 
     connect(ui->cbAperture, &QComboBox::currentTextChanged, this, &SettingsWindow::handleComboBoxEvent);
     connect(ui->cbShutterSpeed, &QComboBox::currentTextChanged, this, &SettingsWindow::handleComboBoxEvent);
@@ -138,6 +136,7 @@ void SettingsWindow::loadSettings()
     ui->lblPath->setText(s->stringValue(Settings::SAVE_PATH));
     ui->cbAskSavePath->setChecked(s->boolValue(Settings::ASK_FOR_SAVE_PATH, true));
     ui->cbSelectLastPicture->setChecked(s->boolValue(Settings::SELECT_LAST_PIC, true));
+    ui->sbCredentialLength->setValue(s->intValue(Settings::CREDENTIAL_LENGTH, 6));
 
     ui->cbLiveView->setChecked(s->boolValue(Settings::LIVE_VIEW, false));
     ui->cbAperture->setCurrentIndex( ui->cbAperture->findText(s->stringValue(Settings::APERTURE)) );
@@ -274,6 +273,10 @@ void SettingsWindow::handleSpinBoxEvent(int val)
     if(objName == "sbFontSize")
     {
         s->setIntValue(Settings::THEME_FONT_SIZE, val);
+    }
+    else if(objName == "sbCredentialLength")
+    {
+        s->setIntValue(Settings::CREDENTIAL_LENGTH, val);
     }
 
 }

@@ -1,8 +1,9 @@
+#include "globals.h"
 #include "mainwindow.h"
-#include "cameracontroller.h"
 #include "ui_mainwindow.h"
 #include "startscreen.h"
 #include "settingswindow.h"
+#include "sessionwindow.h"
 #include "settings.h"
 #include <QFile>
 #include <QDebug>
@@ -11,9 +12,6 @@
 #include <QCryptographicHash>
 #include <QGraphicsOpacityEffect>
 #include <assert.h>
-
-
-#define DIALOG_MASK Qt::Tool|Qt::FramelessWindowHint
 
 MainWindow* MainWindow::s_instance = NULL;
 
@@ -37,29 +35,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     StartScreen *start = new StartScreen();
     SettingsWindow *settings = new SettingsWindow();
+    SessionWindow *session = new SessionWindow();
 
     ui->stackContainer->addWidget(start);
     ui->stackContainer->addWidget(settings);
-
-
-    this->setWindowTitle("CottBooth Application");
+    ui->stackContainer->addWidget(session);
 
     if(Settings::instance()->boolValue(Settings::FIRST_RUN, true))
     {
         this->enterForMasterPassword(*settings);
     }
-
-    CameraController *c = CameraController::instance();
-    connect(c, &CameraController::ready, this, &MainWindow::cameraReady);
-    connect(c, &CameraController::initializationFailed, [=](int, QString message){
-        qDebug() << " cool: " << message;
-    });
-
-    connect(c, &CameraController::imageCreated, [=](CameraFilePath path){
-        qDebug() << "File Created: " << path.folder << path.name;
-    });
-
-    c->init();
 }
 
 MainWindow::~MainWindow()
@@ -71,10 +56,23 @@ MainWindow::~MainWindow()
 void MainWindow::openSettingsWindow()
 {
     ui->stackContainer->setCurrentIndex(1);
-    this->setWindowTitle(ui->stackContainer->currentWidget()->windowTitle());
 }
 
 void MainWindow::closeSettingsWindow()
+{
+    ui->stackContainer->setCurrentIndex(0);
+}
+
+void MainWindow::openSessionWindow()
+{
+    SessionWindow *w = qobject_cast<SessionWindow*>(ui->stackContainer->widget(2));
+    if( w->openSession() )
+    {
+        ui->stackContainer->setCurrentIndex(2);
+    }
+}
+
+void MainWindow::closeSessionWindow()
 {
     ui->stackContainer->setCurrentIndex(0);
 }
@@ -90,7 +88,6 @@ void MainWindow::mergeStyles()
     }
 
     QString theme = Settings::instance()->stringValue(Settings::THEME);
-    qDebug() << "theme: " << theme;
     if(theme.compare("Default") != 0) {
         QFile customStyle(QApplication::applicationDirPath() + "/themes/"+ theme + "/" + theme + ".css");
         if(customStyle.open(QFile::ReadOnly|QIODevice::Text))
@@ -156,9 +153,4 @@ void MainWindow::toggleBackgroundMode(bool flag, int index){
         ui->stackContainer->setGraphicsEffect(effect);
         ui->stackContainer->widget(index)->setGraphicsEffect(blur);
     }
-}
-
-void MainWindow::cameraReady()
-{
-    qDebug() << "Blaa ready baitch";
 }

@@ -21,6 +21,8 @@ public:
     void askForMasterPassword();
     void openSettingsWindow();
     void closeSettingsWindow();
+    void openSessionWindow();
+    void closeSessionWindow();
     void toggleBackgroundMode(bool flag, int wid = 0);
     QtAwesome *m_pAwesome;
 
@@ -29,9 +31,6 @@ private:
     Ui::MainWindow *ui;
     void mergeStyles();
     void enterForMasterPassword(SettingsWindow &settings);
-
-private slots:
-    void cameraReady();
 };
 
 #endif // MAINWINDOW_H

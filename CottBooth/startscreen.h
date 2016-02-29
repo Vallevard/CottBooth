@@ -20,7 +20,7 @@ private:
 
 
 public slots:
-    void btnSettingsClicked();
+
 };
 
 #endif // STARTSCREEN_H

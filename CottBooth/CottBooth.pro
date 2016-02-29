@@ -30,7 +30,8 @@ HEADERS  += mainwindow.h \
     settings.h \
     cameracontroller.h \
     session.h \
-    sessionwindow.h
+    sessionwindow.h \
+    globals.h
 
 FORMS    += mainwindow.ui \
     startscreen.ui \

@@ -13,6 +13,7 @@ public:
     Session(QString sessionName, QString savePath);
 
     static inline QString randomString(size_t length) {
+
         auto randChar = []() -> char
         {
             const char charset[] =
@@ -27,6 +28,8 @@ public:
         std::generate_n(s.begin(),length,randChar);
         return s;
     }
+
+    QString credentials();
 
 private:
     QUuid   m_uidSid;

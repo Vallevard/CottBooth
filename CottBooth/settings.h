@@ -33,7 +33,8 @@ public:
 
     enum IntValues
     {
-        THEME_FONT_SIZE = 0x50
+        THEME_FONT_SIZE = 0x50,
+        CREDENTIAL_LENGTH = 0x51
     };
 
 public:

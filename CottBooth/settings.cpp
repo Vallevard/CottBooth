@@ -23,7 +23,8 @@ Settings::Settings()
     m_keyMap.insert(FIRST_RUN, "main/first_run");
     m_keyMap.insert(SAVE_PATH, "main/save_path");
     m_keyMap.insert(ASK_FOR_SAVE_PATH, "main/ask_for_save_path");
-    m_keyMap.insert(SELECT_LAST_PIC, "main/select_last_picturen");
+    m_keyMap.insert(SELECT_LAST_PIC, "main/select_last_picture");
+    m_keyMap.insert(CREDENTIAL_LENGTH, "main/credential_length");
 
     m_keyMap.insert(LIVE_VIEW, "camera/live_view");
     m_keyMap.insert(APERTURE, "camera/aperture");
@@ -46,8 +47,9 @@ Settings::Settings()
 void Settings::initDefaults()
 {
     setStringValue(SAVE_PATH, "");
-    setBoolValue(ASK_FOR_SAVE_PATH, true);
+    setBoolValue(ASK_FOR_SAVE_PATH, false);
     setBoolValue(SELECT_LAST_PIC, true);
+    setIntValue(CREDENTIAL_LENGTH, 8);
 
     setBoolValue(LIVE_VIEW, true);
     setStringValue(APERTURE, "");
