@@ -30,6 +30,7 @@ Settings::Settings()
     m_keyMap.insert(APERTURE, "camera/aperture");
     m_keyMap.insert(SHUTTER_SPEED, "camera/shutter_speed");
     m_keyMap.insert(WHITE_BALANCE, "camera/white_balance");
+    m_keyMap.insert(KEEP_IMAGE_ON_CAMERA, "camera/keep_image_on_camera");
 
     m_keyMap.insert(MASTER_PASSWORD, "security/master");
     m_keyMap.insert(RESPAWN_TOKEN, "security/respawn_token");
@@ -55,6 +56,7 @@ void Settings::initDefaults()
     setStringValue(APERTURE, "");
     setStringValue(SHUTTER_SPEED, "");
     setStringValue(WHITE_BALANCE, "");
+    setBoolValue(KEEP_IMAGE_ON_CAMERA, 1);
 
     setStringValue(MASTER_PASSWORD, "");
     setStringValue(RESPAWN_TOKEN, "");

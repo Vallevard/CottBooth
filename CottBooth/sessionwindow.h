@@ -21,13 +21,20 @@ public:
 private:
     Ui::SessionWindow *ui;
     Session *m_pSession;
+    QList<QObject> *m_pImageList;
 
     bool showCredentialDialog();
+    bool validateCredentials();
     void initCamera();
+    void loadImages();
+
 
 protected:
-    //void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
 
+private slots:
+    void imageLoaded(QPixmap pixMap, int x, int y);
 };
 
 #endif // SESSIONWINDOW_H

@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <gphoto2/gphoto2-camera.h>
+#include <QFuture>
+#include <QMutex>
+#include <QDir>
 
 namespace CottBooth
 {
@@ -15,6 +18,8 @@ class CameraController : public QObject
 public:    
     static CameraController *instance();
     void init();
+    void uninit();    
+    void setCopyToPath(QString path);
 
 private:
     CameraController(QObject *parent = 0);
@@ -23,13 +28,24 @@ private:
     static CameraController *s_pInstance;
     Camera *m_pCamera;
     GPContext *m_pContext;
+    QMutex m_Mutex;
+    QFuture<void> m_CameraListener;
+    QString m_sCopyToPath;
+
     bool m_bInitialized = false;
+    bool m_bListening = false;
     void startListening();
+    void error(int errCode);
+    void copyTo(CameraFilePath *path);
+    bool isListening();
 
 signals:
     void ready();
-    void initializationFailed(int errCode, QString message);
-    void imageCreated(CameraFilePath path);
+    void fail(int errCode, QString message);
+    void captureComplete(QString path);
+    void copyComplete(QString path);
+    void tetheringBegin();
+    void tetheringEnd();
 
 public slots:
 

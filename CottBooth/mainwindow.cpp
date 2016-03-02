@@ -63,12 +63,18 @@ void MainWindow::closeSettingsWindow()
     ui->stackContainer->setCurrentIndex(0);
 }
 
-void MainWindow::openSessionWindow()
+void MainWindow::openSessionWindow(QString credentials)
 {
     SessionWindow *w = qobject_cast<SessionWindow*>(ui->stackContainer->widget(2));
-    if( w->openSession() )
+    bool ret = w->openSession(credentials);
+    if( ret )
     {
         ui->stackContainer->setCurrentIndex(2);
+    }
+    else if (ret == false && credentials != nullptr)
+    {
+        QMessageBox alert(QMessageBox::Information,"Session not found", "No session were found for the entered credentials.", QMessageBox::Ok, this, DIALOG_MASK);
+        alert.exec();
     }
 }
 

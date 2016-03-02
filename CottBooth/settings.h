@@ -16,7 +16,8 @@ public:
         FIRST_RUN = 0x0,
         ASK_FOR_SAVE_PATH = 0x1,
         SELECT_LAST_PIC = 0x2,
-        LIVE_VIEW = 0x3
+        LIVE_VIEW = 0x3,
+        KEEP_IMAGE_ON_CAMERA = 0x4
     };
 
     enum StringValues

@@ -5,7 +5,7 @@
 #-------------------------------------------------
 include(QtAwesome/QtAwesome/QtAwesome.pri)
 
-QT       += core gui concurrent
+QT       += core gui concurrent sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     settings.cpp \
     cameracontroller.cpp \
     session.cpp \
-    sessionwindow.cpp
+    sessionwindow.cpp \
+    database.cpp \
+    sessionmanager.cpp
 
 HEADERS  += mainwindow.h \
     startscreen.h \
@@ -31,7 +33,9 @@ HEADERS  += mainwindow.h \
     cameracontroller.h \
     session.h \
     sessionwindow.h \
-    globals.h
+    globals.h \
+    database.h \
+    sessionmanager.h
 
 FORMS    += mainwindow.ui \
     startscreen.ui \

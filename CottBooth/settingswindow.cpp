@@ -118,6 +118,7 @@ void SettingsWindow::initEventHandling()
     connect(ui->cbAperture, &QComboBox::currentTextChanged, this, &SettingsWindow::handleComboBoxEvent);
     connect(ui->cbShutterSpeed, &QComboBox::currentTextChanged, this, &SettingsWindow::handleComboBoxEvent);
     connect(ui->cbWhiteBalance, &QComboBox::currentTextChanged, this, &SettingsWindow::handleComboBoxEvent);
+    connect(ui->cbKeepImagesOnCamera, &QCheckBox::stateChanged, this, &SettingsWindow::handleCheckBoxEvent);
 
     connect(ui->tbMasterPassword, &QLineEdit::returnPressed, this, &SettingsWindow::handleTextBoxEnter);
     connect(ui->tbRespawnToken, &QLineEdit::returnPressed, this, &SettingsWindow::handleTextBoxEnter);
@@ -142,6 +143,7 @@ void SettingsWindow::loadSettings()
     ui->cbAperture->setCurrentIndex( ui->cbAperture->findText(s->stringValue(Settings::APERTURE)) );
     ui->cbShutterSpeed->setCurrentIndex( ui->cbShutterSpeed->findText(s->stringValue(Settings::SHUTTER_SPEED)) );
     ui->cbWhiteBalance->setCurrentIndex( ui->cbWhiteBalance->findText(s->stringValue(Settings::WHITE_BALANCE)) );
+    ui->cbKeepImagesOnCamera->setChecked(s->boolValue(Settings::KEEP_IMAGE_ON_CAMERA, true));
 
     ui->cbTheme->setCurrentIndex( ui->cbTheme->findText(s->stringValue(Settings::THEME, "Default")) );
     ui->cbFont->setCurrentIndex( ui->cbFont->findText(s->stringValue(Settings::THEME_FONT, "Ubuntu")) );
@@ -199,6 +201,10 @@ void SettingsWindow::handleCheckBoxEvent(int state)
     else if (objName == "cbLiveView")
     {
         s->setBoolValue(Settings::LIVE_VIEW, static_cast<bool>(state));
+    }
+    else if(objName == "cbKeepImagesOnCamera")
+    {
+        s->setBoolValue(Settings::KEEP_IMAGE_ON_CAMERA, static_cast<bool>(state));
     }
 }
 

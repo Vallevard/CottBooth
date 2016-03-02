@@ -8,7 +8,6 @@
     background: #fff;
 }
 
-
 QToolButton {
     border: 1px solid black;
     border-radius: 150px;
@@ -224,3 +223,21 @@ QSpinBox::up-button:hover, QSpinBox::down-button:hover {
 }
 
 
+/* Session Window */
+#topBar {
+    background: white;
+}
+
+
+#imageContainer {
+    background-color: #fff;
+}
+
+#lblTitle {
+    font-size: 26px;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 5px;
+    border: none;
+    border-bottom: 1px solid gray;
+}

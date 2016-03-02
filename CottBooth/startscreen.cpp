@@ -1,7 +1,9 @@
+#include "globals.h"
 #include "startscreen.h"
 #include "ui_startscreen.h"
 #include "mainwindow.h"
 #include <QDebug>
+#include <QInputDialog>
 
 StartScreen::StartScreen(QWidget *parent) :
     QWidget(parent),
@@ -25,6 +27,14 @@ StartScreen::StartScreen(QWidget *parent) :
 
     connect(ui->btnStartSession, &QToolButton::clicked, [=](){
         MainWindow::instance()->openSessionWindow();
+    });
+
+    connect(ui->btnRespawnSession, &QToolButton::clicked, [=](){
+        bool ok;
+        QString credentials = QInputDialog::getText(this, tr("Credentials"),
+                    tr("Enter credentials to respawn the relevant session."), QLineEdit::Normal,
+                    NULL, &ok, DIALOG_MASK);
+        MainWindow::instance()->openSessionWindow(credentials);
     });
 }
 

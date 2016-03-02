@@ -18,3 +18,8 @@
     background-color: none;
     color: #32cd33;
 }
+
+#imgLogoSmall {
+    background: #fff url("./themes/CottBooth/logo_small.jpg") no-repeat center center;
+    border: none;
+}

@@ -11,31 +11,33 @@ class Session :QObject
 
 public:
     Session(QString sessionName, QString savePath);
+    Session(QString sid, QString sessionName,
+            QString savePath, QString credentials,
+            uint images, uint prints, uint mails);
 
-    static inline QString randomString(size_t length) {
+    static QString randomString(const int len);
 
-        auto randChar = []() -> char
-        {
-            const char charset[] =
-                "0123456789"
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "abcdefghijklmnopqrstuvwxyz";
-            const size_t max_index = (sizeof(charset) - 1);
-            return charset[ rand() % max_index ];
-        };
-
-        QString s(length, 0);
-        std::generate_n(s.begin(),length,randChar);
-        return s;
-    }
-
+    QString sessionId();
     QString credentials();
+    QString sessionName();
+    QString savePath();
+    uint numberOfMails();
+    uint numberOfPrints();
+    uint numberOfImages();
+
+    void incrementImages();
+    void incrementPrints();
+    void incrementMails();
+    void close();
 
 private:
-    QUuid   m_uidSid;
+    QString m_sSid;
     QString m_sName;
     QString m_sPath;
     QString m_sCredentals;
+    uint m_uiNumberOfImages;
+    uint m_uiNumberOfPrints;
+    uint m_uiNumberOfMails;
 };
 
 #endif // SESSION_H
