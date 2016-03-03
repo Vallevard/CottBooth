@@ -37,7 +37,7 @@ private:
     QString m_sCredentals;
     uint m_uiNumberOfImages;
     uint m_uiNumberOfPrints;
-    uint m_uiNumberOfMails;
+    uint m_uiNumberOfMails;   
 };
 
 #endif // SESSION_H

@@ -24,7 +24,10 @@ SOURCES += main.cpp\
     session.cpp \
     sessionwindow.cpp \
     database.cpp \
-    sessionmanager.cpp
+    sessionmanager.cpp \
+    imageworker.cpp \
+    image.cpp \
+    clickablelabel.cpp
 
 HEADERS  += mainwindow.h \
     startscreen.h \
@@ -35,7 +38,10 @@ HEADERS  += mainwindow.h \
     sessionwindow.h \
     globals.h \
     database.h \
-    sessionmanager.h
+    sessionmanager.h \
+    imageworker.h \
+    image.h \
+    clickablelabel.h
 
 FORMS    += mainwindow.ui \
     startscreen.ui \
@@ -58,3 +64,8 @@ unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lgphoto2
 
 INCLUDEPATH += $$PWD/../../../../../../usr/local/include/gphoto2
 DEPENDPATH += $$PWD/../../../../../../usr/local/include/gphoto2
+
+unix: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lexiv2
+
+INCLUDEPATH += $$PWD/../../../../../../usr/local/include/exiv2
+DEPENDPATH += $$PWD/../../../../../../usr/local/include/exiv2

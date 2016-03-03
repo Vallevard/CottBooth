@@ -2,7 +2,13 @@
 #define SESSIONWINDOW_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QGridLayout>
 #include "session.h"
+#include "image.h"
+
+#define THUMB_WIDTH 160
+#define THUMB_HEIGHT 120
 
 namespace Ui {
 class SessionWindow;
@@ -21,7 +27,9 @@ public:
 private:
     Ui::SessionWindow *ui;
     Session *m_pSession;
-    QList<QObject> *m_pImageList;
+    QList<Image*> *m_pImageList;
+    QGridLayout *m_pImageGrid;
+    uint m_uiColumns;
 
     bool showCredentialDialog();
     bool validateCredentials();
@@ -34,7 +42,9 @@ protected:
     void hideEvent(QHideEvent *event);
 
 private slots:
-    void imageLoaded(QPixmap pixMap, int x, int y);
+    void imageLoaded(Image *img);
+    void imageClicked();
 };
 
 #endif // SESSIONWINDOW_H
+

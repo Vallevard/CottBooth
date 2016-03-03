@@ -5,6 +5,8 @@
 #include "settings.h"
 #include "cameracontroller.h"
 #include "sessionmanager.h"
+#include "imageworker.h"
+#include "clickablelabel.h"
 #include <QDebug>
 #include <QInputDialog>
 #include <QMessageBox>
@@ -17,11 +19,11 @@
 
 SessionWindow::SessionWindow(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SessionWindow)
+    ui(new Ui::SessionWindow), m_uiColumns(0)
 {
     ui->setupUi(this);
     m_pSession = nullptr;
-    m_pImageList = new QList<QObject>();
+    m_pImageList = new QList<Image*>();
 
     ui->btnBack->setFont(MainWindow::instance()->m_pAwesome->font(32));
     ui->btnBack->setText( QString( fa::backward ) );
@@ -51,13 +53,20 @@ SessionWindow::SessionWindow(QWidget *parent) :
 
     connect(c, &CameraController::captureComplete, [=](QString path){
         qDebug() << "File Created: " << path;
+        ImageWorker w(path);
+        connect(&w, &ImageWorker::imageReady, this, &SessionWindow::imageLoaded);
+        w.run();
         m_pSession->incrementImages();        
-    });    
+    });
+
+    m_pImageGrid = qobject_cast<QGridLayout *>(ui->imageContainer->layout());
 }
 
 SessionWindow::~SessionWindow()
-{
+{   
     delete ui;
+    delete m_pImageList;
+    delete m_pSession;
 }
 
 void SessionWindow::initCamera()
@@ -136,41 +145,69 @@ bool SessionWindow::validateCredentials()
 
 void SessionWindow::showEvent(QShowEvent * /*event*/)
 {
-    loadImages();
-    //QtConcurrent::run(this, &SessionWindow::loadImages);
+    qDebug() << "spacing" << ui->imageContainer->layout()->spacing();
+    m_uiColumns = ceil( ui->imageContainer->width() / (THUMB_WIDTH + 2 * ui->imageContainer->layout()->spacing()));
+    QtConcurrent::run(this, &SessionWindow::loadImages);
 }
 
 void SessionWindow::hideEvent(QHideEvent * /* event */)
 {
+    qDebug() << "cleaning image container before: " << ui->imageContainer->children().count();
     qDeleteAll(ui->imageContainer->findChildren<QWidget *>());
+    qDeleteAll(m_pImageList->begin(), m_pImageList->end());
+    m_pImageList->clear();
     CameraController::instance()->uninit();
+    qDebug() << "cleaning image container after: " << ui->imageContainer->children().count();
 }
 
 void SessionWindow::loadImages()
-{
-    int w = ui->imageContainer->width() / 6;
-    qDebug() << "width:" << w << " org " << ui->imageContainer->width();
-    for(int x = 0; x < 5; x++)
-    {
-        for(int y = 0; y < 500; y++)
-        {
-            QGridLayout *grid = qobject_cast<QGridLayout *>(ui->imageContainer->layout());
-            int w = ui->imageContainer->width() / 6;
-            QLabel *lblTest = new QLabel(ui->imageContainer);
-            lblTest->setStyleSheet("border: 1px solid green;");
-            lblTest->setFixedSize(w,w);
-            lblTest->setScaledContents(true);
-            //lblTest->setPixmap(pixMap);
-            grid->addWidget(lblTest, y, x, Qt::AlignCenter);
+{    
+    qDebug() << "try to scan " << m_pSession->savePath();
+    QDir dir(m_pSession->savePath(), NULL, QDir::Time|QDir::Reversed);
+    if(dir.exists() == false)
+        return;
 
-            /*QImage img("/Users/tobi/Pictures/12545224383_6a0cc0991e_z.jpg");
-            QPixmap map = QPixmap::fromImage(img);
-            emit imageLoaded(map, x, y);*/
-        }
+    dir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+
+    qDebug() << "Scanning: " << dir.path();
+
+    QFileInfoList files = dir.entryInfoList();
+
+    for(int i = 0; i < files.count(); i++)
+    {
+        QFileInfo info = files[i];
+        qDebug() << "files: " << info.absoluteFilePath();
+        ImageWorker w(info.absoluteFilePath());
+        connect(&w, &ImageWorker::imageReady, this, &SessionWindow::imageLoaded);
+        w.run();
     }
 }
 
-void SessionWindow::imageLoaded(QPixmap pixMap, int x, int y)
+void SessionWindow::imageLoaded(Image *img)
 {
 
+    if (img->isValid() == false)
+        return;
+
+    int x = m_pImageList->count() % m_uiColumns;
+    int y = m_pImageGrid->rowCount() - 1;
+    if (x == 0)
+        y++;
+
+
+    ClickableLabel *lblTest = new ClickableLabel(ui->imageContainer);
+    lblTest->setObjectName("lblThumbnail");
+    lblTest->setFixedSize(THUMB_WIDTH, THUMB_HEIGHT);
+    lblTest->setScaledContents(true);
+    lblTest->setPixmap(*img->thumbnail());
+    lblTest->setIndex(m_pImageList->count());
+    connect(lblTest, &ClickableLabel::clicked, this, &SessionWindow::imageClicked);
+    m_pImageGrid->addWidget(lblTest, y, x , Qt::AlignCenter);
+    m_pImageList->append(img);
+}
+
+void SessionWindow::imageClicked()
+{
+    ClickableLabel *lbl = qobject_cast<ClickableLabel*>(sender());
+    qDebug() << "Clicked on label: " << lbl->index() << " equals image: " << m_pImageList->at(lbl->index())->path();
 }

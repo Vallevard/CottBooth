@@ -233,6 +233,15 @@ QSpinBox::up-button:hover, QSpinBox::down-button:hover {
     background-color: #fff;
 }
 
+#imageContainer QLabel{
+    border: 1px solid black;
+}
+
+#imageContainer QLable:pressed {
+    border: 1px solid gray;
+    opacity: 0.3;
+}
+
 #lblTitle {
     font-size: 26px;
     text-transform: uppercase;
